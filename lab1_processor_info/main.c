@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <locale.h>
 
 int main(void) {
+    setlocale(LC_ALL, "");
     // Часть 1: Получение информации о производителе и базовых функциях
     int max_basic_func;
     int vendor_ebx, vendor_ecx, vendor_edx;
@@ -33,25 +35,27 @@ int main(void) {
     }
     printf("\n");
 
-    // Часть 2: Получение сигнатуры процессора
-    int signature;
-    __asm__ volatile (
-            "movl $1, %%eax\n"
+    int ax;
+    __asm__(
+            "movl $1,%%eax\n"
             "cpuid\n"
-            "movl %%eax, %0\n"
-            : "=r"(signature)
-            : /* нет входных параметров */
-            : "eax", "ebx", "ecx", "edx"
+            "movl %%eax,%0\n"
+            :"=a"(ax)
             );
-
-    // Анализ битов сигнатуры
-    printf("\nProcessor Signature Analysis (EAX=1):\n");
-    printf("Stepping ID:    %d\n", (signature >> 0) & 0xF);
-    printf("Model:          %d\n", (signature >> 4) & 0xF);
-    printf("Family:         %d\n", (signature >> 8) & 0xF);
-    printf("Processor Type: %d\n", (signature >> 12) & 0x3);
-    printf("Extended Model: %d\n", (signature >> 16) & 0xF);
-    printf("Extended Family:%d\n", (signature >> 20) & 0xFF);
+    printf("\nEAX == 1\n");
+    for(int i=31; i>0; --i)
+    {
+        if(i==28) printf("\nstepping: ");
+        if(i==24) printf("\nModel number: ");
+        if(i==20) printf("\nfamily: ");
+        if(i==18) printf("\nprocessor type: ");
+        if(i==16) printf("\nreserve: ");
+        if(i==12) printf("\nextended model: ");
+        if(i==4) printf("\nextended family: ");
+        if(i==0) printf("\nreserve: ");
+        printf("%d", ((ax&0x10000000)?1:0));
+        ax<<=1;
+    }
 
     // Часть 3: Получение маркерной строки процессора
     printf("\nProcessor Brand String:\n");
