@@ -16,8 +16,8 @@ int main(void) {
             "movl %%ecx, %2\n"
             "movl %%edx, %3\n"
             : "=r"(max_basic_func), "=r"(vendor_ebx), "=r"(vendor_ecx), "=r"(vendor_edx)
-            : /* нет входных параметров */
-            : "eax", "ebx", "ecx", "edx"  // Указываем, какие регистры изменяются
+            :
+            : "eax", "ebx", "ecx", "edx"
             );
 
     printf("Maximum basic function set: %d\n", max_basic_func);

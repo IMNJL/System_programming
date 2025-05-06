@@ -3,4 +3,5 @@ project(System_programming)
 
 set(CMAKE_STANDARD 17)
 
-add_executable(System_programming lab1_processor_info/main.c)
+add_executable(System_programming lab1_processor_info/main.c exec/exec.c llll.c pid/main.c
+        signals/signals.c)
