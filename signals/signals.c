@@ -27,7 +27,6 @@ void sig_chld_handler(int sig) {
             exit(EXIT_SUCCESS);
         }
     }
-
 }
 
 int main() {
@@ -101,7 +100,7 @@ int main() {
     }
 
     if (pid == 0) { // Процесс 2 (потомок)
-        const char *data = "Hello from child process!\n";
+        const char *data = "Hello from chld proc";
 
         // Повторно открываем файл, чтобы иметь свой указатель
         int child_fd = open(FILENAME, O_WRONLY);
